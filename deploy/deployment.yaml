@@ -55,7 +55,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: SWAGGER_LIST
-              value: "http://search-service, http://recipe-service, http://reservation-sync-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
+              value: "http://search-service, http://recipe-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
             - name: SERVICE_VERSION
               value: ${DEPLOY_TAG}
           ports:
