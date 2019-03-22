@@ -41,12 +41,12 @@ app
         await rimraf(directory, function () { console.log("Successfully purged directory"); });
 
         Promise.all(
-            swaggers.map(({name, url}) => {
-            return axios.get(`${url}/swagger/docs/swagger.json`)
+            swaggers.map(url => {
+            return axios.get(`${url.trim()}/swagger/docs/swagger.json`)
             .then(response => {
                 const { title, version } = response.data.info;
                 const tsSourceCode = CodeGen.getTypescriptCode({
-                    className: name,
+                    className: title,
                     swagger: response.data,
                     imports: ["../../typings/tsd.d.ts"]
                 });

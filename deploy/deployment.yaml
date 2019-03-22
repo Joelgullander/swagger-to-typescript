@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: swagger-typescript-converter
+  namespace: default
+  annotations:
+    'prometheus.io/scrape': 'true'
+    'prometheus.io/port': '3000'
+spec:
+  selector:
+    app: swagger-typescript-converter
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-typescript-converter
+  namespace: default
+  labels:
+    team: dd
+    system: citygross_site
+    severity: low
+spec:
+  selector:
+    matchLabels:
+      app: swagger-typescript-converter
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: swagger-typescript-converter
+      # annotations:
+      #   fluentd_opts: '{"api-proxy": {"fluentd_tag": "diescheite"}}'
+    spec:
+      tolerations:
+      - key: cg.host.type
+        operator: Equal
+        value: dmz
+        effect: NoSchedule
+      imagePullSecrets:
+        - name: pntregistry.azurecr.io
+      containers:
+        - name: swagger-typescript-converter
+          image: pntregistry.azurecr.io/swagger-typescript-converter:1.2.2
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: '3000'
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SWAGGER_LIST
+              value: "http://search-service, http://recipe-service, http://reservation-sync-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
+            - name: SERVICE_VERSION
+              value: "1.2.2"
+          ports:
+            - name: http
+              containerPort: 3000
