@@ -36,7 +36,10 @@ const createDirectories = (data) => {
 }
  
 app
-    .get('/build', (req, res, next) => {
+    .get('/build', async (req, res, next) => {
+        await rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
+        await rimraf(directory, function () { console.log("Successfully purged directory"); });
+
         Promise.all(
             swaggers.map(({name, url}) => {
             return axios.get(`${url}/swagger/docs/swagger.json`)
@@ -57,11 +60,27 @@ app
         ).then( data => {
             createDirectories(data)
 
+            const remote = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
+            const repoName = 'gitpackage';
+            
+            git()
+            .silent(false)
+            .clone(remote, repoName)
+            .then(() => {
+                ncp(directory, './gitpackage/models', function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log('done!');
+                });
+            })
+
             res.status(200).send("Success")
 
         }).catch(err => {
             console.log(err);
             rimraf(directory, function () { console.log("Successfully purged directory"); });
+            rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
             res.status(500).send('Internal server error');
         })
     })
@@ -72,33 +91,13 @@ app
 
         res.status(200).send(dirMeta)
     })
-    .get('/publish', async (req, res, next) => {
-        await rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
-
-        const remote = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
-        const repoName = 'gitpackage';
-        git()
-            .silent(false)
-            .clone(remote, repoName)
-            .then(() => {
-                return ncp(directory, './gitpackage/models', function (err) {
-                    if (err) {
-                    return console.error(err);
-                    }
-                    console.log('done!');
-                });
-            }).then(() => {
-                git('./gitpackage')
-                .status((err, status) => console.log(status))
-                .add('.')
-                .commit('Added changes')
-                .push(['--set-upstream', 'origin', 'master'])
-                .catch((err) => console.error('failed: ', err));
-            })
-            
-            
-
-
+    .get('/publish', (req, res, next) => {
+        git('./gitpackage')
+        .status((err, status) => console.log(status))
+        .add('.')
+        .commit('Added changes')
+        .push(['--set-upstream', 'origin', 'master'])
+        .then(() => res.status(200).send())
     })
 
 
