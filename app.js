@@ -91,7 +91,7 @@ app
                     console.log('done!');
                 });
             })
-            .status()
+            .status((err, status) => console.log(status))
             .add('.')
             .commit('Added changes')
             .push()
