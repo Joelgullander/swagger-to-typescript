@@ -91,8 +91,8 @@ app
                     console.log('done!');
                 });
             })
+            .status(sta => console.log(sta))
             .add('.')
-            .then(() => console.log('jahapopp'))
             .commit('Added changes')
             .push()
             .catch((err) => console.error('failed: ', err));
