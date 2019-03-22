@@ -45,7 +45,7 @@ spec:
         - name: pntregistry.azurecr.io
       containers:
         - name: swagger-typescript-converter
-          image: pntregistry.azurecr.io/swagger-typescript-converter:1.2.2
+          image: pntregistry.azurecr.io/swagger-typescript-converter:${DEPLOY_TAG}
           imagePullPolicy: Always
           env:
             - name: PORT
@@ -57,7 +57,7 @@ spec:
             - name: SWAGGER_LIST
               value: "http://search-service, http://recipe-service, http://reservation-sync-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
             - name: SERVICE_VERSION
-              value: "1.2.2"
+              value: ${DEPLOY_TAG}
           ports:
             - name: http
               containerPort: 3000
