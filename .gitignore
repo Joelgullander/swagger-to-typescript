@@ -30,3 +30,6 @@ ssh/
 
 .vscode/
 /.vs
+
+/typescript
+/gitpackage

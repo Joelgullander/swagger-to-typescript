@@ -73,10 +73,7 @@ app
         res.status(200).send(dirMeta)
     })
     .get('/publish', async (req, res, next) => {
-        // await rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
-        // publish stuff
-        console.log('Publish packages')
-        // then
+        await rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
 
         const remote = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
         const repoName = 'gitpackage';
@@ -90,12 +87,17 @@ app
                     }
                     console.log('done!');
                 });
+            }).then(() => {
+                git('./gitpackage')
+                .status((err, status) => console.log(status))
+                .add('.')
+                .commit('Added changes')
+                .push(['--set-upstream', 'origin', 'master'])
+                .catch((err) => console.error('failed: ', err));
             })
-            .status((err, status) => console.log(status))
-            .add('.')
-            .commit('Added changes')
-            .push()
-            .catch((err) => console.error('failed: ', err));
+            
+            
+
 
     })
 
