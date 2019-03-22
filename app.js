@@ -93,6 +93,7 @@ app
             })
             .add('*')
             .commit('Added changes')
+            .push()
             .catch((err) => console.error('failed: ', err));
 
     })
