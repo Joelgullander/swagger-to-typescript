@@ -20,7 +20,8 @@ RUN rm -r ./prod_node_modules
 
 FROM node:10-alpine
 RUN apk update && apk upgrade && \
-    apk add --no-cache tzdata
+    apk add --no-cache tzdata && \
+    apk add --no-cache git
 
 ENV PORT=3000
 ENV NODE_ENV=production
