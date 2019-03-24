@@ -45,7 +45,7 @@ spec:
         - name: pntregistry.azurecr.io
       containers:
         - name: swagger-typescript-converter
-          image: pntregistry.azurecr.io/swagger-typescript-converter:${DEPLOY_TAG}
+          image: pntregistry.azurecr.io/swagger-typescript-converter:0036860
           imagePullPolicy: Always
           env:
             - name: PORT
@@ -57,7 +57,7 @@ spec:
             - name: SWAGGER_LIST
               value: "http://search-service, http://recipe-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
             - name: SERVICE_VERSION
-              value: ${DEPLOY_TAG}
+              value: "0036860"
             - name: GIT_USER
               valueFrom:
                 secretKeyRef:

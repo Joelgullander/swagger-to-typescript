@@ -62,11 +62,12 @@ app
         ).then( data => {
             createDirectories(data)
             const repoName = 'gitpackage';
-            
+            console.log('attempting to clone with', remote)
             git()
             .silent(false)
             .clone(remote, repoName)
-            .then(() => {
+            .then(test => {
+                console.log(test)
                 ncp(directory, './gitpackage/models', function (err) {
                     if (err) {
                         return console.error(err);
