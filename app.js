@@ -7,7 +7,7 @@ const rimraf = require("rimraf");
 const git = require("simple-git");
 const express = require('express');
 const axios = require('axios');
-const { swaggers } = require('./config');
+const { swaggers, GIT_SSH_COMMAND } = require('./config');
 const { emptyFolder } = require('./lib/fs');
 const directory = './typescript';
 const app = express();
@@ -64,6 +64,7 @@ app
             const repoName = 'gitpackage';
             
             git()
+            .env('GIT_SSH_COMMAND', GIT_SSH_COMMAND)
             .silent(false)
             .clone(remote, repoName)
             .then(() => {
@@ -93,6 +94,7 @@ app
     })
     .get('/publish', (req, res, next) => {
         git('./gitpackage')
+        .env('GIT_SSH_COMMAND', GIT_SSH_COMMAND)
         .status((err, status) => console.log(status))
         .add('.')
         .commit('Added changes')
