@@ -13,7 +13,7 @@ const directory = './typescript';
 const app = express();
 
 const REPO = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
-const remote = `https://${GIT_USER}:${GIT_PASS}@${REPO}`;
+const remote = `https://${GIT_USER}:${GIT_PASSWORD}@${REPO}`;
 
 const createDirectories = (data) => {
     data.forEach(({title, version, tsFeed}) => {
