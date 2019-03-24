@@ -58,8 +58,16 @@ spec:
               value: "http://search-service, http://recipe-service, http://email-service, http://delivery-service, http://cart-service, http://customer-service, http://orderhistory-service"
             - name: SERVICE_VERSION
               value: ${DEPLOY_TAG}
-            - name: GIT_SSH_COMMAND
-              value: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQClg5MVMdHZh9ebvAOgkkUQRZyJL1nHnzc70JWBWhTpEgPMENL2ZYN/aqUhV1co7/N83uG72+lQskBZGMFaI/usOfdlA4vXiEuoHYhR/RldZWOGZ2JVAnQPgvU3oYpfejCuF6Lb3EVcQbKATrso1DWodPtagem4wJ94DRrwaRE5ORDEW3Z2wyW+q1efOyI+6zoCoo24pAbmXi2+SfXfZANOWHlwGmdZw7ab3Tq9NAXrGA+3dJynBRREZym136pPtS2viZCvBOHOZam6HN4hjDv4mTnffqOAoMn0O7uSZzb6u/xXmh9yoDJQOeMyjn322gogbScbaXk1Pbk4v9cBv078UskG4dFJbII321V5KgOHXuyPm9AzCPajbEz1cpoOJnYciXLTEm1RWn8hjnmQ1Am9688CCnQ9iwmWpYcfeeU0bA1nGINkfiLdAVvKYTVs9gRfe8HlQAIBWKwvIJ+NzNfBfD7k1H5XCF5L3T8Bc2sfi0Lkprup+P+GRT8Bj8xVnPvOoDeK7BV9TvD+NC8ZlpatzJa7cm36dKDRtxBjaFHWHWewrrpylBryIOQUJvd9q4pdyPL8oAbyD5NIRNlg5w6fvYZO00tgHm/nG6XlBdExUMiBQtNR+FqN3BtdBU3+yBaIPvHxZVC7CAcpMzpNIZ9EdLc22SovL7E15FwT4WMJPw== jag@joelgullander.se"
+            - name: GIT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: joels-temp-github-secret
+                  key: username
+            - name: GIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: joels-temp-github-secret
+                  key: password
           ports:
             - name: http
               containerPort: 3000

@@ -7,11 +7,13 @@ const rimraf = require("rimraf");
 const git = require("simple-git");
 const express = require('express');
 const axios = require('axios');
-const { swaggers, GIT_SSH_COMMAND } = require('./config');
+const { swaggers, GIT_USER, GIT_PASSWORD } = require('./config');
 const { emptyFolder } = require('./lib/fs');
 const directory = './typescript';
 const app = express();
 
+const REPO = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
+const remote = `https://${GIT_USER}:${GIT_PASS}@${REPO}`;
 
 const createDirectories = (data) => {
     data.forEach(({title, version, tsFeed}) => {
@@ -59,12 +61,9 @@ app
         })
         ).then( data => {
             createDirectories(data)
-
-            const remote = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
             const repoName = 'gitpackage';
             
             git()
-            .env('GIT_SSH_COMMAND', GIT_SSH_COMMAND)
             .silent(false)
             .clone(remote, repoName)
             .then(() => {
@@ -94,7 +93,6 @@ app
     })
     .get('/publish', (req, res, next) => {
         git('./gitpackage')
-        .env('GIT_SSH_COMMAND', GIT_SSH_COMMAND)
         .status((err, status) => console.log(status))
         .add('.')
         .commit('Added changes')
