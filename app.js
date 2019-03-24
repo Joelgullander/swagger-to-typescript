@@ -12,7 +12,7 @@ const { emptyFolder } = require('./lib/fs');
 const directory = './typescript';
 const app = express();
 
-const REPO = 'https://github.com/bergendahlsfood/Bergendahls.Typescript.Models';
+const REPO = 'github.com/bergendahlsfood/Bergendahls.Typescript.Models';
 const remote = `https://${GIT_USER}:${GIT_PASSWORD}@${REPO}`;
 
 const createDirectories = (data) => {
