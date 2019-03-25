@@ -107,7 +107,7 @@ app
 
         })
         git().push(['--set-upstream', 'origin', 'master'])
-        .then(res => {
+        .then(data => {
             res.status(200).send('Success')
         })
     })
