@@ -106,7 +106,7 @@ app
             console.log('testar')
 
         })
-        .push(['--set-upstream', 'origin', 'master'])
+        git().push(['--set-upstream', 'origin', 'master'])
         .then(err => {
             if(err) {
                 console.log(err)
