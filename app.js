@@ -4,7 +4,7 @@ const ncp = require('ncp').ncp;
 const CodeGen = require("swagger-typescript-codegen").CodeGen;
 const dirTree = require("directory-tree");
 const rimraf = require("rimraf");
-const git = require("simple-git");
+const git = require("simple-git/promise");
 const express = require('express');
 const axios = require('axios');
 const { swaggers, GIT_USER, GIT_PASSWORD } = require('./config');
@@ -72,18 +72,24 @@ app
                     if (err) {
                         return console.error(err);
                     }
+
+                    const dirMeta = dirTree('./typescript', {extensions:/\.ts$/}, null, (item, PATH, stats) => {
+                        return item
+                    });
+
+                    res.status(200).send(dirMeta)
                     console.log('done!');
-                });
+                });                
             })
-
-            res.status(200).send("Success")
-
+            
         }).catch(err => {
             console.log(err);
             rimraf(directory, function () { console.log("Successfully purged directory"); });
             rimraf('./gitpackage', function () { console.log("Successfully purged git directory"); });
             res.status(500).send('Internal server error');
         })
+
+
     })
     .get('/status', (req, res, next) => {
         const dirMeta = dirTree('./typescript', {extensions:/\.ts$/}, null, (item, PATH, stats) => {
@@ -93,10 +99,13 @@ app
         res.status(200).send(dirMeta)
     })
     .get('/publish', (req, res, next) => {
-        git('./gitpackage')
-        .addConfig('user.name', 'Swaggerman')
-        .addConfig('user.email', 'swagger@dynamicdog.se')
-        .commit('Added changes', '.')
+        git('./gitpackage').addConfig('user.name', 'Swaggerman')
+        git().addConfig('user.email', 'swagger@dynamicdog.se')
+        git().commit('Added changes', '.')
+        .then(res => {
+            console.log('testar')
+
+        })
         .push(['--set-upstream', 'origin', 'master'])
         .then(err => {
             if(err) {
