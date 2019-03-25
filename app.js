@@ -103,11 +103,11 @@ app
         myGit.addConfig('user.name', 'Swaggerman')
         myGit.addConfig('user.email', 'swagger@dynamicdog.se')
         
-        myGit.commit('Added changes', '.')
+        myGit.add('./*');
+        myGit.commit('Added changes')
         .then(debug => {
             console.log(debug)
         })
-
         myGit.push(['--set-upstream', 'origin', 'master'])
         .then(debug => {
             console.log(debug)
