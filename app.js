@@ -94,10 +94,12 @@ app
     })
     .get('/publish', (req, res, next) => {
         git('./gitpackage')
+        .addConfig('user.name', 'Swaggerman')
+        .addConfig('user.email', 'swagger@dynamicdog.se')
         .status((err, status) => console.log(status))
-        .add('.')
-        .commit('Added changes')
-        .push(remote, ['--set-upstream', 'origin', 'master'])
+        .commit('Added changes', '.')
+        .status((err, status) => console.log(status))
+        .push(['--set-upstream', 'origin', 'master'])
         .then(() => res.status(200).send())
     })
 
