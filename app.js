@@ -15,10 +15,6 @@ const app = express();
 const REPO = 'github.com/bergendahlsfood/Bergendahls.Typescript.Models.git';
 const remote = `https://${GIT_USER}:${GIT_PASSWORD}@${REPO}`;
 
-const myGit = git('./gitpackage');
-myGit.addConfig('user.name', 'Swaggerman')
-myGit.addConfig('user.email', 'swagger@dynamicdog.se')
-
 const createDirectories = (data) => {
     data.forEach(({title, version, tsFeed}) => {
         let pathname = `typescript/${title}/${version}/`;
@@ -103,7 +99,10 @@ app
         res.status(200).send(dirMeta)
     })
     .get('/publish', (req, res, next) => {
-
+        const myGit = git('./gitpackage');
+        myGit.addConfig('user.name', 'Swaggerman')
+        myGit.addConfig('user.email', 'swagger@dynamicdog.se')
+        
         myGit.commit('Added changes', '.')
         .then(debug => {
             console.log(debug)
