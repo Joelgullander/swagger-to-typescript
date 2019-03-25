@@ -107,11 +107,7 @@ app
 
         })
         git().push(['--set-upstream', 'origin', 'master'])
-        .then(err => {
-            if(err) {
-                console.log(err)
-                res.status(500).send('Internal server error')
-            }
+        .then(res => {
             res.status(200).send('Success')
         })
     })
