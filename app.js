@@ -96,11 +96,15 @@ app
         git('./gitpackage')
         .addConfig('user.name', 'Swaggerman')
         .addConfig('user.email', 'swagger@dynamicdog.se')
-        .status((err, status) => console.log(status))
         .commit('Added changes', '.')
-        .status((err, status) => console.log(status))
         .push(['--set-upstream', 'origin', 'master'])
-        .then(() => res.status(200).send())
+        .then(err => {
+            if(err) {
+                console.log(err)
+                res.status(500).send('Internal server error')
+            }
+            res.status(200).send('Success')
+        )
     })
 
 
