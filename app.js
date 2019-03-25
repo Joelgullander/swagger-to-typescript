@@ -97,7 +97,7 @@ app
         .status((err, status) => console.log(status))
         .add('.')
         .commit('Added changes')
-        .push(['--set-upstream', 'origin', 'master'])
+        .push(remote, ['--set-upstream', 'origin', 'master'])
         .then(() => res.status(200).send())
     })
 
