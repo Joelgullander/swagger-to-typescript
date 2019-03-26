@@ -33,19 +33,19 @@ pipeline {
       }
     }
 
-    // stage('Deploy unloaded') {
-    //    when { branch 'develop' }
-    //    environment {
-    //      BGD_ENV = 'unloaded'
-    //      DEPLOY_TAG = "${GIT_COMMIT_SHORT}"
-    //      GIT_DEPLOY_MSG = "${name}@${GIT_COMMIT_SHORT}"
-    //    }
-    //    steps {
-    //      CloneCD(gitopsPath, BGD_ENV)
-    //      GenDeploy(BGD_ENV, "${gitopsPath}/${name}")
-    //      CommitCD(gitopsPath, BGD_ENV, GIT_DEPLOY_MSG)
-    //    }
-    // }
+    stage('Deploy unloaded') {
+       when { branch 'master' }
+       environment {
+         BGD_ENV = 'unloaded'
+         DEPLOY_TAG = "${GIT_COMMIT_SHORT}"
+         GIT_DEPLOY_MSG = "${name}@${GIT_COMMIT_SHORT}"
+       }
+       steps {
+         CloneCD(gitopsPath, BGD_ENV)
+         GenDeploy(BGD_ENV, "${gitopsPath}/${name}")
+         CommitCD(gitopsPath, BGD_ENV, GIT_DEPLOY_MSG)
+       }
+    }
 
     stage('Deploy preloaded') {
       when { branch 'master' }
